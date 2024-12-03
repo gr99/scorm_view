@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>ScormBilan</title>
+<meta name='description' content="ScormBilan" />
+<meta name='keywords' content='' />
+<meta name="robots" content="index, follow" />
+<meta name="doc-type" content="Public">
+<meta name="rating" content="General">
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<script type="text/javascript" src="javascript/jquery1.8.2.min.js" ></script>
+<script type="text/javascript" >
+if(jQuery){
+}else{
+window.location.reload();
+}
+function RedirectSmartphone(url){
+if(url&&url.length>0&&isSmart()){
+window.location = url;
+}
+}
+function isSmart(){
+if (duagt("android")) return true;
+if (duagt("iphone")) return true;
+if (duagt("ipod")) return true;
+if (duagt("symbian")) return true;
+if (duagt("windows phone")) return true;
+return false;
+}
+function duagt(name){
+var uagt = navigator.userAgent.toLowerCase();
+if (uagt.search(name) > -1){return true;}else{return false;}
+}
+</script>
+<meta name="viewport" content="user-scalable=no">
+<link rel="stylesheet" href="css/ludiscape.css" type="text/css" />
+<style>body{background-color:#778899;}#main{border-radius:8px;border:solid 1px gray;}</style>
+</head>
+<body>
+<noscript style="color:red;background:white;" >Veuillez autoriser les scripts !!</noscript>
+<img style="position:absolute;top:1000px;width:1px;height:1px;" src="css/ludiScapeLoad.gif" /><div id="loadbloc" >...</div>
+
+<div id="game" style="display:none;position:absolute;z-index:100;" ></div>
+<div id="globaltransition" style="display:none;position:absolute;overflow:hidden;z-index : 101;" >
+<img id="zoomtransition" style="position:absolute;" src="" />
+</div>
+<div id="globalcurtain" style="display:none;position:absolute;z-index : 102;" >
+<div id="globalcurtainanim" ></div>
+<div id="globalcurtainanim2" ></div>
+</div>
+<div id="main" style="display:none;" onClick="clickAction();" ></div>	
+<div id='loaddiv' style='background-color:White;' ></div>
+<div id="loaddivbarre" ></div><div id='loadludi' class='loadludi' style="background-image:url('css/ludiScapeLoad.gif');" ><div id='minibar' class='minibar' ><div id='evolminibar' class='evolminibar' ></div></div></div>	
+<div id="lightbox" class="lightbox" >
+<div class="closelightbox" onClick="closeFluxLight();" ></div>
+<div id="innerlightbox" class="innerlightbox" ></div>
+</div>
+<div id='typesite' data-size='classic-auto' ></div><div id='sizesite' data-size='860' ></div><div id="xapiActivityID" >scormbilan</div><div id="xapiTitle" >scormbilan</div><div id='noNavigueparam' ></div><div id='noCacheManifest' ></div><img src='http://www.batisseurs-numeriques.fr/blank.png' /><img src='https://www.ludiscape.com/blank.png' /><div style='display:none' id='DiapoNbDiapo' >4</div>	
+<span style='display:none;' id='numpagemem' >page0</span>	
+<script type="text/javascript" src="javascript/jquery.hidewords.js" ></script>
+<script type="text/javascript" src="javascript/jquery.anim.js" ></script>
+<script type="text/javascript" src="javascript/jquery.ts.min.js" ></script>
+<script type="text/javascript" src="javascript/jquery.texte.lpl.js" ></script>
+<script type="text/javascript" src="javascript/jquery.mousewheel.js" ></script>
+<script type="text/javascript" src="javascript/jquery.rotate.js" ></script>
+<script type="text/javascript" src="javascript/jquery.math.keyboard.ludiscape.js?v=2022128135819" ></script>
+<script type="text/javascript" src="javascript/hand-1.3.8.js" ></script>
+<script type="text/javascript" src="javascript/page.js?v=2022128135819" ></script>
+<script type="text/javascript" src="javascript/ludiscape.js?v=2022128135819" ></script>
+<script type="text/javascript" src="javascript/jsadd.js" ></script>
+<script type="text/javascript" src="javascript/scorm.js" ></script>
+<script type="text/javascript" >ScormStartCom();</script>
+
+<img id='imgloadctr' style="position:absolute;left:-2500px;top:-2500px;" />
+
+<span id="dummyspan" style="display:none;" ></span>
+<span id="linkParams" style="display:none;" ></span>
+<iframe id="xapiFrame" style="position:absolute;left:-500px;top:-500px;width:50px;height;" src="" ></iframe>
+<div id="mysoundswf" ></div>
+<div id="controlload" >-</div>
+
+<div id="fullscreen" onClick="fullScreenMain();" ></div>
+</body>
+</html>

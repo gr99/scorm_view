@@ -1,0 +1,1 @@
+﻿var baseTradOff = new Array();
