@@ -1,11 +1,19 @@
 import 'dart:async';
-import 'package:app/features/MyHomePage.dart';
+import 'package:app/features/scorm_view.dart';
+import 'package:app/features/scorm_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    // Wrap the app with ChangeNotifierProvider
+    ChangeNotifierProvider(
+      create: (context) => ScormViewModel(),  // Provide ScormViewModel
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       navigatorKey: navigatorKey, // Set the navigator key here
-      home: MyHomePage(),
+      home: ScormView(),
     );
   }
 }

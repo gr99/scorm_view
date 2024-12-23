@@ -1,85 +1,97 @@
-﻿<!DOCTYPE html>
-<html  xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>ScormBilan</title>
-<meta name='description' content="ScormBilan" />
-<meta name='keywords' content='' />
-<meta name="robots" content="index, follow" />
-<meta name="doc-type" content="Public">
-<meta name="rating" content="General">
+    <meta charset="UTF-8">
+    <title>SCORM 1.2 Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- For responsiveness -->
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<script type="text/javascript" src="javascript/jquery1.8.2.min.js" ></script>
-<script type="text/javascript" >
-if(jQuery){
-}else{
-window.location.reload();
-}
-function RedirectSmartphone(url){
-if(url&&url.length>0&&isSmart()){
-window.location = url;
-}
-}
-function isSmart(){
-if (duagt("android")) return true;
-if (duagt("iphone")) return true;
-if (duagt("ipod")) return true;
-if (duagt("symbian")) return true;
-if (duagt("windows phone")) return true;
-return false;
-}
-function duagt(name){
-var uagt = navigator.userAgent.toLowerCase();
-if (uagt.search(name) > -1){return true;}else{return false;}
-}
-</script>
-<meta name="viewport" content="user-scalable=no">
-<link rel="stylesheet" href="css/ludiscape.css" type="text/css" />
-<style>body{background-color:#778899;}#main{border-radius:8px;border:solid 1px gray;}</style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Pretender for API Mocking -->
+    <script src="https://cdn.jsdelivr.net/gh/pretenderjs/FakeXMLHttpRequest@v2.1.1/fake_xml_http_request.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/route-recognizer/0.3.4/route-recognizer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pretender@3.4.3/dist/pretender.js"></script>
+
+    <!-- lodash -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/scorm-again@2.0.0/dist/scorm-again.js"></script>
+
+    <script src="lms.js" type="application/javascript"></script>
+    <script src="common.js" type="application/javascript"></script>
+    <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        let settings = getSettingsFromParams(urlParams);
+
+        settings.lmsCommitUrl = '/scorm12';
+
+        window.API = new Scorm12API(settings);
+
+        let dataFromLms = { // this data is passed from the LMS
+          cmi: {
+            core: {
+              entry: 'ab-initio',
+              student_id: '@jcputney',
+              student_name: 'Jonathan Putney',
+            }
+          }
+        };
+        if(urlParams.get('existing')) {
+          dataFromLms = _.merge(dataFromLms, EXISTING_SCORM12);
+        }
+
+        window.API.loadFromJSON(dataFromLms, '');
+
+        var unloaded = false;
+        function unloadHandler() {
+          if (!unloaded && !API.isTerminated()) {
+            API.LMSSetValue('cmi.core.exit', 'suspend'); //Set exit to whatever is needed
+            API.LMSCommit(''); //save all data that has already been set
+            API.LMSTerminate(''); //close the SCORM API connection properly
+            unloaded = true;
+            return false;
+          }
+          return false;
+        }
+
+        window.onbeforeunload = unloadHandler;
+        window.onunload = unloadHandler;
+
+        // Function to launch the iframe in a new window
+        function launchIframe() {
+            const newWindow = window.open('', 'SCORM Popup', 'width=800,height=600');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>SCORM 1.2 - Popup</title>
+                    <style>
+                        html, body {
+                            height: 100%;
+                            margin: 0;
+                            padding: 0;
+                            display: flex;
+                            flex-direction: column;
+                        }
+                        iframe {
+                            flex-grow: 1;
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                            background-color: aqua; /* Optional: Keep the aqua background for the iframe */
+                        }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="start_of_the_scrom"></iframe>
+                </body>
+                </html>
+            `);
+        }
+    </script>
 </head>
 <body>
-<noscript style="color:red;background:white;" >Veuillez autoriser les scripts !!</noscript>
-<img style="position:absolute;top:1000px;width:1px;height:1px;" src="css/ludiScapeLoad.gif" /><div id="loadbloc" >...</div>
-
-<div id="game" style="display:none;position:absolute;z-index:100;" ></div>
-<div id="globaltransition" style="display:none;position:absolute;overflow:hidden;z-index : 101;" >
-<img id="zoomtransition" style="position:absolute;" src="" />
-</div>
-<div id="globalcurtain" style="display:none;position:absolute;z-index : 102;" >
-<div id="globalcurtainanim" ></div>
-<div id="globalcurtainanim2" ></div>
-</div>
-<div id="main" style="display:none;" onClick="clickAction();" ></div>	
-<div id='loaddiv' style='background-color:White;' ></div>
-<div id="loaddivbarre" ></div><div id='loadludi' class='loadludi' style="background-image:url('css/ludiScapeLoad.gif');" ><div id='minibar' class='minibar' ><div id='evolminibar' class='evolminibar' ></div></div></div>	
-<div id="lightbox" class="lightbox" >
-<div class="closelightbox" onClick="closeFluxLight();" ></div>
-<div id="innerlightbox" class="innerlightbox" ></div>
-</div>
-<div id='typesite' data-size='classic-auto' ></div><div id='sizesite' data-size='860' ></div><div id="xapiActivityID" >scormbilan</div><div id="xapiTitle" >scormbilan</div><div id='noNavigueparam' ></div><div id='noCacheManifest' ></div><img src='http://www.batisseurs-numeriques.fr/blank.png' /><img src='https://www.ludiscape.com/blank.png' /><div style='display:none' id='DiapoNbDiapo' >4</div>	
-<span style='display:none;' id='numpagemem' >page0</span>	
-<script type="text/javascript" src="javascript/jquery.hidewords.js" ></script>
-<script type="text/javascript" src="javascript/jquery.anim.js" ></script>
-<script type="text/javascript" src="javascript/jquery.ts.min.js" ></script>
-<script type="text/javascript" src="javascript/jquery.texte.lpl.js" ></script>
-<script type="text/javascript" src="javascript/jquery.mousewheel.js" ></script>
-<script type="text/javascript" src="javascript/jquery.rotate.js" ></script>
-<script type="text/javascript" src="javascript/jquery.math.keyboard.ludiscape.js?v=2022128135819" ></script>
-<script type="text/javascript" src="javascript/hand-1.3.8.js" ></script>
-<script type="text/javascript" src="javascript/page.js?v=2022128135819" ></script>
-<script type="text/javascript" src="javascript/ludiscape.js?v=2022128135819" ></script>
-<script type="text/javascript" src="javascript/jsadd.js" ></script>
-<script type="text/javascript" src="javascript/scorm.js" ></script>
-<script type="text/javascript" >ScormStartCom();</script>
-
-<img id='imgloadctr' style="position:absolute;left:-2500px;top:-2500px;" />
-
-<span id="dummyspan" style="display:none;" ></span>
-<span id="linkParams" style="display:none;" ></span>
-<iframe id="xapiFrame" style="position:absolute;left:-500px;top:-500px;width:50px;height;" src="" ></iframe>
-<div id="mysoundswf" ></div>
-<div id="controlload" >-</div>
-
-<div id="fullscreen" onClick="fullScreenMain();" ></div>
+<button onclick="launchIframe()">Launch SCORM</button>
 </body>
 </html>
