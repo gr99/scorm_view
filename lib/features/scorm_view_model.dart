@@ -291,7 +291,6 @@ class ScormViewModel extends ChangeNotifier {
       _serverMessage = 'Server running at $_serverUrl';
       notifyListeners();
 
-      // _webViewController.loadRequest(Uri.parse(_serverUrl));
     } catch (e) {
       _handleError(e);
     }

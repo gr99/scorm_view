@@ -69,7 +69,6 @@ class _WindowPopupState extends State<WindowPopup> {
     return AlertDialog(
       insetPadding: EdgeInsets.zero, // Remove the default padding
       contentPadding: EdgeInsets.zero, // Remove the default content padding
-      backgroundColor: Colors.transparent, // Make the background transparent
       content: SizedBox(
         width: screenSize.width, // Set width to screen width
         height: screenSize.height, // Set height to screen height

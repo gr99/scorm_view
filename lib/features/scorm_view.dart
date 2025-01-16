@@ -1,3 +1,4 @@
+import 'package:app/features/multipage/multi_page_screen.dart';
 import 'package:app/features/scorm_view_model.dart';
 import 'package:app/features/web_view_screen.dart';
 import 'package:flutter/material.dart';
@@ -96,8 +97,9 @@ class ScormView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                        new web_view_screen(url:'http://127.0.0.1:8080')
+                        builder: (BuildContext context) => new MultiPageScreen()
+                        // new web_view_screen(url:'http://127.0.0.1:8080')
+
                     ));
               },
               child: const Text('Launch Course'),
